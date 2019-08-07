@@ -2,57 +2,68 @@ import java.awt.*;
 import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.*;
+import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.regex.*;
+import java.util.stream.Collectors;
 
 import org.json.simple.*;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class test {
 
     public static void main(String[] args) {
 
-        JSONObject obj = new JSONObject();
-        obj.put("name", new Integer(38));
-        obj.put("age", new Integer(900000000));
-        obj.put("salary", new Integer(600000));
-        System.out.print(obj);
+        SortMapByValue hashmap = new SortMapByValue();
 
-        ArrayList<String> list = new ArrayList<String>();//Creating arraylist
-        SortMapByValue obj1= new SortMapByValue();
-//        System.out.println(obj.size());
-
-        System.out.println(obj.keySet());
-
-        LinkedList<Integer> al = new LinkedList<Integer>();
-
-        for (Object key : obj.keySet()) {
-//            System.out.println(key);
-            Object keyvalue = obj.get(key);
-//            System.out.println(keyvalue);
-//            al.add((Integer) keyvalue);
-//            System.out.println(keyvalue.getClass().getSimpleName());
-            obj1.insertKeyValue(key.toString(),(Integer) keyvalue);
-        }
-        Collections.sort(al, Collections.<Integer>reverseOrder());
-//        System.out.println("link list :" + al.getFirst());
-
-        HashMapTest hM = new HashMapTest();
-
-//        hM.testHashmap();
-
-//        System.out.println(hM.testHashmap().);
-//        TreeMap<String, Integer> sorted = new TreeMap<String, Integer>(hM.testHashmap());
-//        Set<Map.Entry<String, Integer>> mappings = sorted.entrySet();
-//        System.out.println(mappings);
+        hashmap.insertKeyValue("hello12", Long.valueOf(12));
+        hashmap.insertKeyValue("hello11", Long.valueOf(13));
+        hashmap.insertKeyValue("hello112", Long.valueOf(16));
+        hashmap.insertKeyValue("hello1", Long.valueOf(16));
 
 
+        System.out.println(hashmap.getMeModeKey());
+//        System.out.println();
 
-        obj1.insertKeyValue("hello d",3);
-        obj1.insertKeyValue("hello s",12);
-        obj1.insertKeyValue("hello c",3);
+        System.out.println("--------------------------------------testing hashmaps--------------------------------------------");
 
-        obj1.getMeModeKey();
 
-        System.out.println( obj1.getMeModeKey());
+        Map<String, Long> hashMap_non = new HashMap();
+        hashMap_non.put("A", Long.valueOf(1));
+        hashMap_non.put("B", Long.valueOf(2));
+        hashMap_non.put("C", Long.valueOf(3));
+        hashMap_non.put("w", Long.valueOf(3));
+//        hashMap_non.put("e", Long.valueOf(3));
+
+
+//        System.out.println(getKey(hashMap_non, 3));
+//        System.out.println(getKeysByValue(hashMap_non, Long.valueOf(3)).toString());
+//        System.out.println(hashmap.getUnsortMap().getClass().getSimpleName());
+        System.out.println(hashMap_non.getClass().getSimpleName());
+hashmap.getUnsortMap();
+
+hashmap.getKeysByValue(hashmap.getUnsortMap(),hashmap.getUnsortMap().get(hashmap.getMeModeKey()));
+        System.out.println(hashmap.getKeysByValue(hashmap.getUnsortMap(),hashmap.getUnsortMap().get(hashmap.getMeModeKey())));
 
     }
+
+
+    public static <K, V> K getKey(Map<K, V> map, V value) {
+        return map.keySet()
+                .stream()
+                .filter(key -> value.equals(map.get(key)))
+                .findAny().get();
+    }
+
+    public static <T, E> Set<T> getKeysByValue(Map<T, E> map, E value) {
+        return map.entrySet()
+                .stream()
+                .filter(entry -> Objects.equals(entry.getValue(), value))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+    }
+
 }
+
